@@ -27,6 +27,18 @@
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="preload" as="image" href="./assets/images/hero-banner.jpg" />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      // Initialize EmailJS
+      (function () {
+        emailjs.init({
+          publicKey: "NJIu4H8jCEZ_iRAL5",
+        });
+      })();
+    </script>
   </head>
 
   <body>
@@ -539,66 +551,69 @@
         <!-- 
     - #Contact
   -->
-        <section class="contact-section" id="contact">
-          <div class="contact-form-container">
-            <form action="" method="post">
-              <h2>Contact Me</h2>
-              <div class="form-group">
-                <label for="name">Name:</label>
-                <div class="input-icon">
-                  <i class="fas fa-user"></i>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="e.g Pankil Pankil"
-                    required
-                  />
+        <form id="contact-form">
+          <section class="contact-section" id="contact">
+            <div class="contact-form-container">
+              <form action="" method="post">
+                <h2>Contact Me</h2>
+                <div class="form-group">
+                  <label for="name">Name:</label>
+                  <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="e.g Pankil Pankil"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <div class="input-icon">
-                  <i class="fas fa-envelope"></i>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="e.g Pankil1702@mail.com"
-                    required
-                  />
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <div class="input-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="e.g Pankil1702@mail.com"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone:</label>
-                <div class="input-icon">
-                  <i class="fas fa-phone"></i>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="+1(123)-869-7353"
-                    required
-                  />
+                <div class="form-group">
+                  <label for="phone">Phone:</label>
+                  <div class="input-icon">
+                    <i class="fas fa-phone"></i>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      placeholder="+1(123)-869-7353"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="message">Message:</label>
-                <div class="input-icon">
-                  <i class="fas fa-comment"></i>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    placeholder="Write your message..."
-                    required
-                  ></textarea>
+                <div class="form-group">
+                  <label for="message">Message:</label>
+                  <div class="input-icon">
+                    <i class="fas fa-comment"></i>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="5"
+                      placeholder="Write your message..."
+                      required
+                    ></textarea>
+                  </div>
                 </div>
-              </div>
-              <button type="submit">Send</button>
-            </form>
-          </div>
-        </section>
+                <button type="submit">Send</button>
+              </form>
+              <p id="status"></p>
+            </div>
+          </section>
+        </form>
       </article>
     </main>
 
@@ -641,13 +656,19 @@
           </li>
 
           <li>
-            <a href="https://wa.me/16138697353?text=Hello%20Pankil%2C%20%20" class="social-link">
+            <a
+              href="https://wa.me/16138697353?text=Hello%20Pankil%2C%20%20"
+              class="social-link"
+            >
               <ion-icon name="logo-whatsapp"></ion-icon>
             </a>
           </li>
 
           <li>
-            <a href="https://www.linkedin.com/in/pankil-9802ba305/" class="social-link">
+            <a
+              href="https://www.linkedin.com/in/pankil-9802ba305/"
+              class="social-link"
+            >
               <ion-icon name="logo-linkedin"></ion-icon>
             </a>
           </li>
@@ -662,6 +683,42 @@
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
     ></script>
+    <script>
+      // Handle form submission
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Get values from the form
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const phone = document.getElementById("phone").value;
+          const message = document.getElementById("message").value;
+
+          var templateParams = {
+            name: name,
+            email: email,
+            phone: phone,
+            message: message,
+          };
+          // Send form data using EmailJS
+          emailjs
+            .send("service_h5r2yfn", "template_lvernlg", templateParams)
+            .then(
+              function (response) {
+                console.log("SUCCESS!", response.status, response.text);
+                document.getElementById("status").innerHTML =
+                  "Message sent successfully!";
+              },
+              function (error) {
+                console.log("FAILED...", error);
+                document.getElementById("status").innerHTML =
+                  "Failed to send message. Please try again.";
+              }
+            );
+        });
+    </script>
     <script
       nomodule
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
